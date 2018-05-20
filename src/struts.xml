@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 指定默认的父包 -->
+	<constant name="struts.convention.default.parent.package" value="jelly-default" />
+	<!-- 设置convention插件默认的根包 -->
+	<constant name="struts.convention.package.locators" value="actions" />
+	<!-- 搜索此配置下的所有包 -->
+	<!-- <constant name="struts.convention.package.locators.basePackage" value="com.redm" />  -->
+	<!-- 确保Spring的自动装配策略总是被考虑 -->
+	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />
+	<!--配置struts2应用于开发模式-->
+	<constant name="struts.devMode" value="true"/>
+	<!--配置Convention插件自动重加载映射-->
+	<constant name="struts.convention.classes.reload" value="true"/>
+	<!-- 文件发生改变后是否重新加载文件 -->
+	<constant name="struts.configuration.xml.reload" value="true"/>
+	<!-- 继承convention-default包，定义一个默认的拦截器，根据需要还可扩展 -->
+	<!-- 设置限制上传文件的大小-->
+	<constant name="struts.multipart.maxSize" value="9000000"/>
+	
+	<package name="jelly-default" extends="convention-default,json-default">
+		<interceptors>
+			<!-- 登录验证拦截器 -->
+			<interceptor name="authority" class="com.jelly.help.commons.interceptor.AuthorityInterceptor" />
+			<interceptor-stack name="jellyStack">
+				<!-- 将登录验证拦截器加入默认的拦截器栈中 -->
+				<interceptor-ref name="authority">
+					<param name="excludeMethods">onlineCheck,logout,index,login,welcome,manager,loginPage,register,querry,initialData,initialView</param>
+				</interceptor-ref> 
+				<interceptor-ref name="paramsPrepareParamsStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="jellyStack" />
+		<default-action-ref name="actionError" />  
+		<global-results>
+			<result name="index">/index.jsp</result>
+			<result name="login">/offline.jsp</result>
+			<result name="errorPage">/error.html</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="app" exception="java.lang.NoSuchMethodException"></exception-mapping>
+			<exception-mapping result="errorPage" exception="java.lang.Exception"></exception-mapping> 
+		</global-exception-mappings> 
+	</package>
+
+</struts>

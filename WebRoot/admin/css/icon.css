@@ -1,0 +1,104 @@
+.close {background-image:url(../images/icon/375.gif) !important}
+.mobile {background-image:url(../images/icon/phone.gif) !important}
+.letters {background-image:url(../images/icon/letters.gif) !important}
+.email {background-image:url(../images/icon/email_open.gif) !important}
+
+.icon-disconn {background-image:url(../images/icon/disconnect.png) !important} 
+.icon-date {background-image:url(../images/icon/date.gif) !important}
+.icon-suggest {background-image:url(../images/icon/suggest.gif) !important}
+.icon-mhistory {background-image:url(../images/icon/mhistory.gif) !important}
+.icon-printer {background-image:url(../images/icon/printer.gif) !important}
+.icon-printview {background-image:url(../images/icon/print-viewer.bmp) !important}
+.icon-delete {background-image:url(../images/icon/delete.gif) !important}
+.icon-create {background-image:url(../images/icon/create.gif) !important}
+.icon-update {background-image:url(../images/icon/update.gif) !important}
+.icon-save {background-image:url(../images/icon/save.gif) !important}
+.icon-cancel {background-image:url(../images/icon/cancel.gif) !important}
+.icon-lock {background-image:url(../images/icon/lock.gif) !important}
+.icon-win {background-image:url(../images/icon/tab.gif) !important}
+.icon-search {background-image:url(../images/icon/search.gif) !important}
+.icon-adsearch {background-image:url(../images/icon/zoom.png) !important}
+.icon-role {background-image:url(../images/icon/role.gif) !important}
+.icon-refresh {background-image:url(../images/icon/refresh.gif) !important}
+.icon-reset {background-image:url(../images/icon/reset.gif) !important}
+.icon-vcard {background-image:url(../images/icon/vcard.gif) !important}
+.icon-info {background-image:url(../images/icon/info.gif) !important}
+.icon-enable {background-image:url(../images/icon/flag_green.gif) !important}
+.icon-disable {background-image:url(../images/icon/flag_red.gif) !important}
+.icon-collapse {background-image:url(../images/icon/tag_yellow1.gif) !important}
+.icon-expand {background-image:url(../images/icon/tag_yellow.png) !important}
+
+/**jian**/
+.icon-upload {background-image: url(../images/icon/upload.png) !important}
+.icon-browse {background-image: url(../images/icon/browse.png) !important}
+.icon-ok {background-image: url(../images/icon/ok.png) !important}
+.icon-eyes {background-image: url(../images/icon/375.gif) !important}
+.icon-edit {background-image: url(../images/icon/edt.gif) !important}
+.icon-photos {background-image: url(../images/icon/photos.png) !important}
+.icon-lookat {background-image: url(../images/icon/lookat.png) !important}
+
+/**grid row style ***/
+.row-yellow .x-grid-cell { background-color: yellow; }
+.row-green .x-grid-cell { background-color: #B1F464;}
+.row-red .x-grid-cell { background-color: #ffecfd;}
+
+.row-red-font .x-grid-cell{
+	background-image:none;
+	background-color: #ffecfd;
+ 	color:red;
+}
+/*yuan*/
+.icon-sign {background-image: url(../images/icon/flag--pencil.png) !important}
+.icon-peform {background-image: url(../images/icon/flag-green.png) !important}
+.icon-go-on {background-image: url(../images/icon/flag--arrow.png) !important}
+.icon-end {background-image: url(../images/icon/flag--minus.png) !important}
+.icon-ok {background-image: url(../images/icon/tick.png) !important}
+
+/*树型菜单**/
+.x-tree-icon-leaf {background-image:url("../images/icon/tag_blue.gif")!important;}
+.x-tree-icon-parent {background-image:url(../images/icon/tag_blue3.gif) !important;}
+.x-grid-tree-node-expanded .x-tree-icon-parent{	background-image:url(../images/icon/tag_blue.png) !important;}
+.x-tree-node-collapsed .x-tree-node-icon{background-image:url(../images/icon/tag_blue.gif) !important;;}
+
+//解决下拉树的问题
+.x-combo-list {
+    border:1px solid;
+    border-top: 0 none;
+    zoom:1;
+    overflow:hidden;
+    height: auto;
+}
+.x-combo-list .x-combo-selected{
+	border:1px dotted !important;
+    cursor:pointer;
+}
+.x-combo-list .x-toolbar {
+    border-bottom:0 none;
+}
+.x-combo-list {
+    border-color:#98c0f4;
+    background-color:#ddecfe;
+    font:normal 12px tahoma, arial, helvetica, sans-serif;
+}
+.x-combo-list .x-combo-selected{
+	border-color:#a3bae9 !important;
+    background-color:#dfe8f6;
+}
+
+.x-combo-list .x-toolbar {
+    border-top-color:#98c0f4;
+}
+.treecombo{
+	height: auto;
+}
+//商品分类树样式
+.x-tree-icon-leaf {
+    background-image: url("../images/icon/tag_blue3.gif");
+    width: 16px;
+}
+.tasks {
+    background-image: url(../images/icon/tag_blue3.gif) !important;
+}
+.task-folder {
+    background-image: url(../images/icon/folder_go.png) !important;
+}

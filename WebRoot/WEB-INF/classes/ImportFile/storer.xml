@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="GBK"?>
+<wms>
+<storer>
+<storerKey>1000003</storerKey>
+<company>11000001</company>
+<packKey>STD3</packKey>
+<putawayStrategyKey>STD</putawayStrategyKey>
+<lotKey>STD</lotKey>
+<rotationStrategykey>STD</rotationStrategykey>
+<PreAllocationStrategyKey>STD</PreAllocationStrategyKey>
+<allocationStrategyKey>STD</allocationStrategyKey>
+<replenishmentStrategyKey>STD</replenishmentStrategyKey>
+</storer>
+</wms>

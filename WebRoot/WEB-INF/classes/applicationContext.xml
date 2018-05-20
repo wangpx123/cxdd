@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+	http://www.springframework.org/schema/jee 
+	http://www.springframework.org/schema/jee/spring-jee-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd" 
+	default-autowire="byName" default-lazy-init="true">
+
+	<!-- 定义受环境影响易变的变量 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- 标准配置 -->
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!--  第一个数据源开始 qxue  -->
+	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driver" value="${jdbc.driver}" />
+		<property name="driverUrl" value="${jdbc.driver_url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="alias" value="${jdbc.alias}" />
+		<property name="houseKeepingSleepTime" value="${proxool.houseKeepingSleepTime}" />
+		<property name="prototypeCount" value="${proxool.prototypeCount}" />
+		<property name="maximumConnectionCount" value="${proxool.maximumConnectionCount}" />
+		<property name="minimumConnectionCount" value="${proxool.minimumConnectionCount}" />
+		<property name="maximumActiveTime" value="${proxool.maximumActiveTime}" />
+		<property name="overloadWithoutRefusalLifetime" value="${proxool.overloadWithoutRefusalLifetime}" />
+		<property name="houseKeepingTestSql" value="${proxool.houseKeepingTestSql}" />
+		<property name="trace" value="${proxool.trace}" />
+		<property name="verbose" value="${proxool.verbose}" />
+	</bean>
+	
+	<!-- 第二个数据源配置,使用Proxool连接池 -->
+	<bean id="dataSourceB" class="org.logicalcobwebs.proxool.ProxoolDataSource" >
+		<property name="driver" value="${bak.driver}" />
+		<property name="driverUrl" value="${bak.driver_url}" />
+		<property name="user" value="${bak.username}" />
+		<property name="password" value="${bak.password}" />
+		<property name="alias" value="${bak.alias}" />
+		<property name="houseKeepingSleepTime" value="${proxool.houseKeepingSleepTime}" />
+		<property name="prototypeCount" value="${proxool.prototypeCount}" />
+		<property name="maximumConnectionCount" value="${proxool.maximumConnectionCount}" />
+		<property name="minimumConnectionCount" value="${proxool.minimumConnectionCount}" />
+		<property name="maximumActiveTime" value="${proxool.maximumActiveTime}" />
+		<property name="overloadWithoutRefusalLifetime" value="${proxool.overloadWithoutRefusalLifetime}" />
+		<property name="houseKeepingTestSql" value="${proxool.houseKeepingTestSql}" />
+		<property name="trace" value="${proxool.trace}" />
+		<property name="verbose" value="${proxool.verbose}" />
+	</bean>
+	
+	<!-- 用注解方式注入bean -->
+	<context:annotation-config/>
+	<!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
+	<context:component-scan base-package="com.redm" />
+	
+    
+	<!-- Hibernate配置 -->
+	<!-- DB2  -->  
+	<bean id="aSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">     
+	    <property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${jdbc.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<!-- 連接釋放模式：可有三個選擇，after_statement／after_transaction／on_close(默认) -->
+				<!-- <prop key="hibernate.connection.release_mode">after_transaction</prop> -->
+			</props>
+		</property>
+		<property name="packagesToScan" value="com.redm.entity" />  
+	</bean>     
+	  
+	<!-- DB2 -->  
+	<bean id="bSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">     
+	    <property name="dataSource" ref="dataSourceB" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${bak.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${bak.hibernate.hbm2ddl.auto}</prop>
+				<!-- 連接釋放模式：可有三個選擇，after_statement／after_transaction／on_close(默认) -->
+				<prop key="hibernate.connection.release_mode">on_close</prop>
+			</props>
+		</property>
+		<property name="packagesToScan" value="com.redm.entity" />  
+	</bean>     
+
+	 <!-- 动态SessionFactory -->
+    <bean id="sessionFactory" class="com.redm.actions.system.DynamicSessionFactoryImpl">
+        <property name="defaultTargetSessionFactory" ref="aSessionFactory"/>
+        <property name="targetSessionFactorys">
+            <map>
+                <entry value-ref="aSessionFactory" key="aSessionFactory"/>
+                <!--entry value-ref="bSessionFactory" key="bSessionFactory"/-->
+            </map> 
+        </property>
+    </bean>
+ 
+    <!-- 自定义动态切换SessionFactory事务管理器，注入sessionFactory  -->
+    <bean id="transactionManager" class="com.redm.actions.system.DynamicTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+     <!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    
+    <!-- 配置事务的传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="edit*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="remove*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="execute*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 配置那些类、方法纳入到事务的管理 -->
+    <aop:config>
+        <aop:pointcut expression="execution(* com.hoo.**.service.impl.*.*(..))" id="transactionManagerMethod"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionManagerMethod" />
+    </aop:config>
+</beans>
